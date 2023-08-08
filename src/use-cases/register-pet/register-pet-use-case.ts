@@ -4,7 +4,8 @@ import { Pet, PetRequirement } from '@prisma/client'
 interface RegisterPetRequest {
   name: string;
   description: string;
-  requirements?: PetRequirement
+  oRGId: string;
+  requirements?: PetRequirement;
 }
 
 interface RegisterPetResponse {
@@ -16,10 +17,12 @@ export class RegisterPetUseCase {
 
 	async execute({
 		name,
+		oRGId,
 		description,
 	}: RegisterPetRequest): Promise<RegisterPetResponse> {
 		const pet = await this.petsRepository.create({
 			name,
+			oRGId,
 			description,
 		})
 

@@ -10,6 +10,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model OrgAddress {
+  id        String  @id @default(uuid())
+  street    String
+  latitude  Decimal
+  longitude Decimal
+  ORG       ORG[]
+}
+
+model ORG {
+  id            String     @id @default(uuid())
+  name          String
+  email         String     @unique
+  postalCode    String
+  address       OrgAddress @relation(fields: [addressId], references: [id])
+  addressId     String
+  phone         String
+  password_hash String
+  Pet           Pet[]
+}
+
 model PetRequirement {
   id          String  @id @default(uuid())
   description String
@@ -22,4 +42,6 @@ model Pet {
   name         String
   description  String
   requirements PetRequirement[]
+  org          ORG              @relation(fields: [oRGId], references: [id])
+  oRGId        String
 }
