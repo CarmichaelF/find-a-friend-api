@@ -6,11 +6,11 @@ const envSchema = z.object({
 	NODE_ENV: z.enum(['dev', 'test', 'production']).default('dev'),
 	PORT: z.coerce.number().default(3333),
 	DATABASE_URL: z.string(),
-	HASH_SALT: z.coerce.number().default(10)
+	HASH_SALT: z.number().default(10)
 })
 const _env = envSchema.safeParse(process.env)
 
 if (!_env.success)
-	throw new Error(`Invalid environment variables: ${_env.error.format()}`)
+	throw new Error(`Invalid environment variables: ${JSON.stringify(_env.error.format())}`)
 
 export const env = _env.data
