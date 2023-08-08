@@ -15,6 +15,7 @@ describe('Register a new Pet', () => {
 
 		const { pet } = await sut.execute({
 			name: 'Simba',
+			oRGId: 'org-id',
 			description: 'Simba description',
 		})
 
