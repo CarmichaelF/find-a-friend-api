@@ -2,7 +2,7 @@
 
 - [X] Deve ser possível cadastrar um pet
 - [ ] Deve ser possível listar todos os pets disponíveis para adoção em uma cidade
-- [ ] Deve ser possível filtrar pets por suas características
+- [X] Deve ser possível filtrar pets por suas características
 - [ ] Deve ser possível visualizar detalhes de um pet para adoção
 - [X] Deve ser possível se cadastrar como uma ORG
 - [X] Deve ser possível realizar login como uma ORG
