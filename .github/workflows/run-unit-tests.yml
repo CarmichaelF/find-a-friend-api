@@ -4,6 +4,7 @@ on: [push]
 
 env:
   HASH_SALT: "10"
+  MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
 
 jobs:
   run-unit-tests:
