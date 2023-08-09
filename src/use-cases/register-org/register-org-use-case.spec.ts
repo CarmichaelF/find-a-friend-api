@@ -15,8 +15,8 @@ describe('Register ORG', () => {
 		const { org } = await sut.execute({
 			name: 'JS Org',
 			email: 'jsorg@gmail.com',
-			addressId: 'address-id',
-			postalCode: '0999999',
+			address: '29 champs elysée',
+			zipcode: '75008',
 			password: '123456',
 			phone: '1199999999',
 		})
