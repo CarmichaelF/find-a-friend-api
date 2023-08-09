@@ -11,7 +11,8 @@ describe('Register ORG', () => {
 		sut = new RegisterOrgUseCase(orgsRepository)
 	})
 
-	it('should be able to register a new ORG', async () => {
+	//skipping it for now to not consume a lot of maps api
+	it.skip('should be able to register a new ORG', async () => {
 		const { org } = await sut.execute({
 			name: 'JS Org',
 			email: 'jsorg@gmail.com',
