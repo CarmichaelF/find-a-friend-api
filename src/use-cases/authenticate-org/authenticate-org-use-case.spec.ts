@@ -18,12 +18,8 @@ describe('Authenticate ORG', () => {
 	it('should be able to authenticate an ORG', async () => {
 		const { email } = await orgsRepository.create({
 			id: 'test-org',
-			zipcode: '75008',
-			address: '29 champs elysée paris',
-			city: 'Paris',
+			addressId: 'address-id',
 			email: 'org@gmail.com',
-			latitude: 48.8698679,
-			longitude: 2.3072976,
 			name: 'ORG test',
 			phone: '999999999',
 			password_hash: hashSync('123456', env.HASH_SALT),
@@ -51,12 +47,8 @@ describe('Authenticate ORG', () => {
 		
 		const { email } = await orgsRepository.create({
 			id: 'test-org',
-			zipcode: '75008',
-			address: '29 champs elysée paris',
-			city: 'Paris',
+			addressId: 'address-id',
 			email: 'org@gmail.com',
-			latitude: 48.8698679,
-			longitude: 2.3072976,
 			name: 'ORG test',
 			phone: '999999999',
 			password_hash: hashSync('123456', env.HASH_SALT),

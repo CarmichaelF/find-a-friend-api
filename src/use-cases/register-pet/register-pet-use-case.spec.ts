@@ -4,7 +4,6 @@ import { RegisterPetUseCase } from './register-pet-use-case'
 import { InMemoryOrgsRepository } from '@/repositories/in-memory/in-memory-orgs-repository'
 import { hashSync } from 'bcryptjs'
 import { env } from '@/env'
-import { Decimal } from '@prisma/client/runtime/library'
 import { OrgNotFoundError } from '../errors/org-not-found-error'
 
 let petsRepository: InMemoryPetsRepository
@@ -21,12 +20,8 @@ describe('Register a new Pet', () => {
 	it('should be able to register a new pet', async () => {
 		await orgsRepository.create({
 			id: 'test-org',
-			zipcode: '75008',
-			address: '29 champs elysée paris',
-			city: 'Paris',
+			addressId: 'address-id',
 			email: 'org@gmail.com',
-			latitude: new Decimal(48.8698679),
-			longitude: new Decimal(2.3072976),
 			name: 'ORG test',
 			phone: '999999999',
 			password_hash: hashSync('123456', env.HASH_SALT),
