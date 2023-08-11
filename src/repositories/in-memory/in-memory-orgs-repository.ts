@@ -3,7 +3,7 @@ import { ORGsRepository } from '../orgs-repository'
 import { randomUUID } from 'crypto'
 
 export class InMemoryOrgsRepository implements ORGsRepository {
-	public orgs: ORG[] = []
+	private orgs: ORG[] = []
 
 	async create({ id, ...rest }: ORG) {
 		const org: ORG = { id: id ? id : randomUUID(), ...rest }

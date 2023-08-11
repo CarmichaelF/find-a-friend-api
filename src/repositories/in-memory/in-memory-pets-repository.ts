@@ -1,25 +1,25 @@
 import { randomUUID } from 'crypto'
 import {
-	FilterOptions,
-	FilterOptionsKeys,
 	PetsRepository,
 } from '../pets-repository'
 import { Prisma, Pet } from '@prisma/client'
 
 export class InMemoryPetsRepository implements PetsRepository {
-	public pets: Pet[] = []
+	private pets: Pet[] = []
 
 	async create({
 		id,
 		description,
 		name,
 		oRGId,
+		addressId,
 	}: Prisma.PetUncheckedCreateInput) {
 		const pet: Pet = {
 			id: id ? id : randomUUID(),
 			description,
 			name,
 			oRGId,
+			addressId,
 		}
 
 		this.pets.push(pet)
@@ -27,16 +27,7 @@ export class InMemoryPetsRepository implements PetsRepository {
 		return pet
 	}
 
-	async getPetsByCharacteristics(query: FilterOptions) {
-		const pets = this.pets.filter((pet) => {
-			return Object.entries(query).map((entry) => {
-				const key = entry[0] as FilterOptionsKeys
-				const value: string = entry[1]
-				if(!value) return
-				return pet[key].toLowerCase().includes(value.toLowerCase())
-			})
-		})
-
-		return pets
+	async getPets() {
+		return this.pets
 	}
 }

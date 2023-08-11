@@ -31,6 +31,7 @@ export class RegisterPetUseCase {
 			name,
 			oRGId,
 			description,
+			addressId: org.addressId
 		})
 
 		return { pet }
