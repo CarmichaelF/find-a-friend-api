@@ -18,13 +18,14 @@ export async function authenticate(
 
 	try {
 		const { org } = await authenticateOrgUseCase.execute(body)
-		const token = reply.jwtSign(
+		const token = await reply.jwtSign(
 			{},
 			{
 				sign: { sub: org.id, expiresIn: '1d' },
 			}
 		)
-		return { token }
+
+		return reply.status(200).send({ token })
 	} catch (error) {
 		if (error instanceof OrgAuthenticationError)
 			return reply.status(400).send({ message: error.message })
