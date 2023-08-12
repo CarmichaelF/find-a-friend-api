@@ -1,14 +1,14 @@
 import { ORGsRepository } from '@/repositories/orgs-repository'
-import { ORG } from '@prisma/client'
-import { OrgNotFoundError } from '../errors/org-not-found-error'
+import { org } from '@prisma/client'
 import { compareSync } from 'bcryptjs'
+import { OrgAuthenticationError } from '../errors/org-authentication-error'
 
 interface AuthenticateOrgUseCaseRequest {
   email: string;
   password: string;
 }
 interface AuthenticateOrgUseCaseResponse {
-  org: ORG;
+  org: org;
 }
 
 export class AuthenticateOrgUseCase {
@@ -20,11 +20,11 @@ export class AuthenticateOrgUseCase {
 	}: AuthenticateOrgUseCaseRequest): Promise<AuthenticateOrgUseCaseResponse> {
 		const org = await this.orgsRepository.findOrgByEmail(email)
 
-		if (!org) throw new OrgNotFoundError()
+		if (!org) throw new OrgAuthenticationError()
 
 		const doesPasswordsMatch = compareSync(password, org.password_hash)
 
-		if (!doesPasswordsMatch) throw new OrgNotFoundError()
+		if (!doesPasswordsMatch) throw new OrgAuthenticationError()
 
 		return { org }
 	}

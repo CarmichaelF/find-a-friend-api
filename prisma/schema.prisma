@@ -17,11 +17,11 @@ model Address {
   city      String
   latitude  Decimal
   longitude Decimal
-  ORG       ORG[]
+  org       org[]
   Pet       Pet[]
 }
 
-model ORG {
+model org {
   id            String  @id @default(uuid())
   name          String
   email         String  @unique
@@ -44,7 +44,7 @@ model Pet {
   name              String
   description       String
   requirements      PetRequirement[]
-  org               ORG              @relation(fields: [oRGId], references: [id])
+  org               org              @relation(fields: [oRGId], references: [id])
   oRGId             String
   address           Address          @relation(fields: [addressId], references: [id])
   addressId         String

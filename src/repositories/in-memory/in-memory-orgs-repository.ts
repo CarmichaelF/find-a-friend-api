@@ -1,12 +1,12 @@
-import { ORG } from '@prisma/client'
+import { org } from '@prisma/client'
 import { ORGsRepository } from '../orgs-repository'
 import { randomUUID } from 'crypto'
 
 export class InMemoryOrgsRepository implements ORGsRepository {
-	private orgs: ORG[] = []
+	private orgs: org[] = []
 
-	async create({ id, ...rest }: ORG) {
-		const org: ORG = { id: id ? id : randomUUID(), ...rest }
+	async create({ id, ...rest }: org) {
+		const org: org = { id: id ? id : randomUUID(), ...rest }
 
 		this.orgs.push(org)
 		return org
