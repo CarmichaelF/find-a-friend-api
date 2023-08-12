@@ -18,7 +18,6 @@ export type FilterPetsParams = {
 
 export interface PetsRepository {
   create(data: PetsRepositoryCreateParams): Promise<PetWithRelations>;
-  getPets() : Promise<PetWithRelations[]>
   getPetById(id: string) : Promise<PetWithRelations | null>
   filterPetsByCityOrCharacteristics(params : FilterPetsParams) : Promise<PetWithRelations[]>
 }

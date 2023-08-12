@@ -1,12 +1,12 @@
 import { env } from '@/env'
 import { ORGsRepository } from '@/repositories/orgs-repository'
-import { ORG } from '@prisma/client'
 import { hashSync } from 'bcryptjs'
 import { OrgAlreadyExistsError } from '../errors/org-already-exists-error'
 import { getAddressInfo } from '@/utils/get-address-info'
 import { OrgInvalidAddress } from '../errors/org-invalid-address-error'
 import { AddressRepository } from '@/repositories/address-repository'
 import { Decimal } from '@prisma/client/runtime/library'
+import { org } from '@prisma/client'
 
 interface RegisterOrgUseCaseRequest {
   name: string;
@@ -16,9 +16,8 @@ interface RegisterOrgUseCaseRequest {
   phone: string;
   password: string;
 }
-
 interface RegisterOrgUseCaseResponse {
-  org: ORG;
+  org: org;
 }
 
 export class RegisterOrgUseCase {
@@ -35,10 +34,10 @@ export class RegisterOrgUseCase {
 		...rest
 	}: RegisterOrgUseCaseRequest): Promise<RegisterOrgUseCaseResponse> {
 		const password_hash = hashSync(password, env.HASH_SALT)
+		
+		const orgWithSameEmail = await this.orgsRepository.findOrgByEmail(email)
 
-		const orgWithSameEmail = this.orgsRepository.findOrgByEmail(email)
-
-		if (!orgWithSameEmail) throw new OrgAlreadyExistsError()
+		if (orgWithSameEmail !== null) throw new OrgAlreadyExistsError()
 
 		const fullAddress = await getAddressInfo({ zipcode, address })
 
@@ -56,11 +55,12 @@ export class RegisterOrgUseCase {
 		})
 
 		const org = await this.orgsRepository.create({
-			password_hash,
 			email,
 			addressId,
 			...rest,
+			password_hash
 		})
+
 
 		return { org }
 	}

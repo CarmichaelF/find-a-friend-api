@@ -4,7 +4,7 @@ import { ORGsRepository } from '@/repositories/orgs-repository'
 import { InMemoryOrgsRepository } from '@/repositories/in-memory/in-memory-orgs-repository'
 import { hashSync } from 'bcryptjs'
 import { env } from '@/env'
-import { OrgNotFoundError } from '../errors/org-not-found-error'
+import { OrgAuthenticationError } from '../errors/org-authentication-error'
 
 let orgsRepository: ORGsRepository
 let sut: AuthenticateOrgUseCase
@@ -40,7 +40,7 @@ describe('Authenticate ORG', () => {
 				email: 'org@gmail.com',
 				password: '123456',
 			})
-		}).rejects.toBeInstanceOf(OrgNotFoundError)
+		}).rejects.toBeInstanceOf(OrgAuthenticationError)
 	})
 	
 	it('should not be able to authenticate with the wrong password', async () => {
@@ -59,6 +59,6 @@ describe('Authenticate ORG', () => {
 				email,
 				password: '654321',
 			})
-		}).rejects.toBeInstanceOf(OrgNotFoundError)
+		}).rejects.toBeInstanceOf(OrgAuthenticationError)
 	})
 })
