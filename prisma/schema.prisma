@@ -40,12 +40,18 @@ model PetRequirement {
 }
 
 model Pet {
-  id           String           @id @default(uuid())
-  name         String
-  description  String
-  requirements PetRequirement[]
-  org          ORG              @relation(fields: [oRGId], references: [id])
-  oRGId        String
-  address      Address          @relation(fields: [addressId], references: [id])
-  addressId    String
+  id                String           @id @default(uuid())
+  name              String
+  description       String
+  requirements      PetRequirement[]
+  org               ORG              @relation(fields: [oRGId], references: [id])
+  oRGId             String
+  address           Address          @relation(fields: [addressId], references: [id])
+  addressId         String
+  age               String
+  dogSize           String
+  energyLevel       String
+  independencyLevel String
+  environment       String
+  images            String[]
 }

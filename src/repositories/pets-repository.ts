@@ -1,10 +1,24 @@
 import { Pet, Prisma } from '@prisma/client'
 
-export type FilterOptions = Partial<Omit<Pet, 'id' | 'oRGId' | 'addressId'>>
+type OptionalFields<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
+
+export type FilterOptions = Partial<Omit<Pet, 'id' | 'oRGId' | 'addressId' | 'images'>>
 
 export type FilterOptionsKeys = keyof FilterOptions
 
+export type PetWithRelations = Prisma.PetGetPayload<{
+  include: { requirements: true, address: true }
+}>
+
+export type PetsRepositoryCreateParams = OptionalFields<PetWithRelations, 'id'>
+
+export type FilterPetsParams = {
+  city: string
+} & FilterOptions
+
 export interface PetsRepository {
-  create(data: Prisma.PetUncheckedCreateInput): Promise<Pet>;
-  getPets() : Promise<Pet[]>
+  create(data: PetsRepositoryCreateParams): Promise<PetWithRelations>;
+  getPets() : Promise<PetWithRelations[]>
+  getPetById(id: string) : Promise<PetWithRelations | null>
+  filterPetsByCityOrCharacteristics(params : FilterPetsParams) : Promise<PetWithRelations[]>
 }
