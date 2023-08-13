@@ -1,6 +1,6 @@
 import { PetsRepository } from '@/repositories/pets-repository'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { FilterPetsUseCase } from './filter-pets-use-case'
+import { ListPetsUseCase } from './list-pets-use-case'
 import { InMemoryPetsRepository } from '@/repositories/in-memory/in-memory-pets-repository'
 import { ORGsRepository } from '@/repositories/orgs-repository'
 import { InMemoryOrgsRepository } from '@/repositories/in-memory/in-memory-orgs-repository'
@@ -11,13 +11,13 @@ import { Decimal } from '@prisma/client/runtime/library'
 
 let petsRepository: PetsRepository
 let orgsRepository: ORGsRepository
-let sut: FilterPetsUseCase
+let sut: ListPetsUseCase
 
 describe('Filter Pets', () => {
 	beforeEach(() => {
 		petsRepository = new InMemoryPetsRepository()
 		orgsRepository = new InMemoryOrgsRepository()
-		sut = new FilterPetsUseCase(petsRepository)
+		sut = new ListPetsUseCase(petsRepository)
 	})
 
 	it('should be able to filter a pet by city', async () => {
@@ -44,7 +44,7 @@ describe('Filter Pets', () => {
 			name: 'Simba',
 			description: 'Test description',
 			age: 'Puppy',
-			dogSize: 'Medium',
+			petSize: 'Medium',
 			energyLevel: 'Low',
 			independencyLevel: 'Low',
 			environment: 'Large',
@@ -67,7 +67,7 @@ describe('Filter Pets', () => {
 			name: 'Simba',
 			description: 'Test description',
 			age: 'Puppy',
-			dogSize: 'Medium',
+			petSize: 'Medium',
 			energyLevel: 'Low',
 			independencyLevel: 'Low',
 			environment: 'Large',
@@ -105,7 +105,7 @@ describe('Filter Pets', () => {
 			name: 'Simba',
 			description: 'Tired',
 			age: 'Puppy',
-			dogSize: 'Medium',
+			petSize: 'Medium',
 			energyLevel: 'Low',
 			independencyLevel: 'Low',
 			environment: 'Large',
@@ -128,7 +128,7 @@ describe('Filter Pets', () => {
 			name: 'Simba',
 			description: 'Energetic',
 			age: 'Puppy',
-			dogSize: 'Medium',
+			petSize: 'Medium',
 			energyLevel: 'Low',
 			independencyLevel: 'Low',
 			environment: 'Large',

@@ -5,14 +5,18 @@ import { InMemoryOrgsRepository } from '@/repositories/in-memory/in-memory-orgs-
 import { hashSync } from 'bcryptjs'
 import { env } from '@/env'
 import { OrgNotFoundError } from '../errors/org-not-found-error'
-import { Decimal } from '@prisma/client/runtime/library'
 import { randomUUID } from 'crypto'
 import startCloudinary from '@/services/start-cloudinary-service'
 import { PetImageQuantityError } from '../errors/pet-image-quantity-error'
 import { PetRequirementsQuantityError } from '../errors/pet-requirenents-quantity-error copy'
+import { ORGsRepository } from '@/repositories/orgs-repository'
+import { PetsRepository } from '@/repositories/pets-repository'
+import { InMemoryAddressRepository } from '@/repositories/in-memory/in-memory-address-repository'
+import { AddressRepository } from '@/repositories/address-repository'
 
-let petsRepository: InMemoryPetsRepository
-let orgsRepository: InMemoryOrgsRepository
+let petsRepository: PetsRepository
+let orgsRepository: ORGsRepository
+let addressRepository: AddressRepository
 let sut: RegisterPetUseCase
 
 describe('Register a new Pet', () => {
@@ -22,11 +26,11 @@ describe('Register a new Pet', () => {
 	beforeEach(() => {
 		petsRepository = new InMemoryPetsRepository()
 		orgsRepository = new InMemoryOrgsRepository()
-		sut = new RegisterPetUseCase(petsRepository, orgsRepository)
+		addressRepository = new InMemoryAddressRepository()
+		sut = new RegisterPetUseCase(petsRepository, orgsRepository, addressRepository)
 	})
 
-	//skipping it for now to not spend a lot of cloudinary free plan
-	it.skip('should be able to register a new pet', async () => {
+	it('should be able to register a new pet', async () => {
 		await orgsRepository.create({
 			id: 'test-org',
 			addressId: 'address-id',
@@ -40,16 +44,8 @@ describe('Register a new Pet', () => {
 			name: 'Simba',
 			oRGId: 'test-org',
 			description: 'Simba description',
-			address: {
-				id: randomUUID(),
-				latitude: new Decimal(48.8698679),
-				longitude: new Decimal(2.3072976),
-				city: 'Paris',
-				zipcode: '75008',
-				address: '29 champs elysée paris',
-			},
 			age: 'Puppy',
-			dogSize: 'Medium',
+			petSize: 'Medium',
 			energyLevel: 'Low',
 			independencyLevel: 'Low',
 			environment: 'Large',
@@ -60,7 +56,6 @@ describe('Register a new Pet', () => {
 				{
 					id: randomUUID(),
 					description: 'Apartment is prohibited',
-					petId: 'pet-test',
 				},
 			],
 		})
@@ -78,26 +73,17 @@ describe('Register a new Pet', () => {
 					oRGId: 'test-org',
 					description: 'Simba description',
 					age: 'Puppy',
-					dogSize: 'Medium',
+					petSize: 'Medium',
 					energyLevel: 'Low',
 					independencyLevel: 'Low',
 					environment: 'Large',
 					images: [
 						'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAApgAAAKYB3X3/OAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANCSURBVEiJtZZPbBtFFMZ/M7ubXdtdb1xSFyeilBapySVU8h8OoFaooFSqiihIVIpQBKci6KEg9Q6H9kovIHoCIVQJJCKE1ENFjnAgcaSGC6rEnxBwA04Tx43t2FnvDAfjkNibxgHxnWb2e/u992bee7tCa00YFsffekFY+nUzFtjW0LrvjRXrCDIAaPLlW0nHL0SsZtVoaF98mLrx3pdhOqLtYPHChahZcYYO7KvPFxvRl5XPp1sN3adWiD1ZAqD6XYK1b/dvE5IWryTt2udLFedwc1+9kLp+vbbpoDh+6TklxBeAi9TL0taeWpdmZzQDry0AcO+jQ12RyohqqoYoo8RDwJrU+qXkjWtfi8Xxt58BdQuwQs9qC/afLwCw8tnQbqYAPsgxE1S6F3EAIXux2oQFKm0ihMsOF71dHYx+f3NND68ghCu1YIoePPQN1pGRABkJ6Bus96CutRZMydTl+TvuiRW1m3n0eDl0vRPcEysqdXn+jsQPsrHMquGeXEaY4Yk4wxWcY5V/9scqOMOVUFthatyTy8QyqwZ+kDURKoMWxNKr2EeqVKcTNOajqKoBgOE28U4tdQl5p5bwCw7BWquaZSzAPlwjlithJtp3pTImSqQRrb2Z8PHGigD4RZuNX6JYj6wj7O4TFLbCO/Mn/m8R+h6rYSUb3ekokRY6f/YukArN979jcW+V/S8g0eT/N3VN3kTqWbQ428m9/8k0P/1aIhF36PccEl6EhOcAUCrXKZXXWS3XKd2vc/TRBG9O5ELC17MmWubD2nKhUKZa26Ba2+D3P+4/MNCFwg59oWVeYhkzgN/JDR8deKBoD7Y+ljEjGZ0sosXVTvbc6RHirr2reNy1OXd6pJsQ+gqjk8VWFYmHrwBzW/n+uMPFiRwHB2I7ih8ciHFxIkd/3Omk5tCDV1t+2nNu5sxxpDFNx+huNhVT3/zMDz8usXC3ddaHBj1GHj/As08fwTS7Kt1HBTmyN29vdwAw+/wbwLVOJ3uAD1wi/dUH7Qei66PfyuRj4Ik9is+hglfbkbfR3cnZm7chlUWLdwmprtCohX4HUtlOcQjLYCu+fzGJH2QRKvP3UNz8bWk1qMxjGTOMThZ3kvgLI5AzFfo379UAAAAASUVORK5CYII=',
 					],
-					address: {
-						id: randomUUID(),
-						latitude: new Decimal(48.8698679),
-						longitude: new Decimal(2.3072976),
-						city: 'Paris',
-						zipcode: '75008',
-						address: '29 champs elysée paris',
-					},
 					requirements: [
 						{
 							id: randomUUID(),
 							description: 'Apartment is prohibited',
-							petId: 'pet-test',
 						},
 					],
 				})
@@ -121,24 +107,15 @@ describe('Register a new Pet', () => {
 					oRGId: 'test-org',
 					description: 'Simba description',
 					age: 'Puppy',
-					dogSize: 'Medium',
+					petSize: 'Medium',
 					energyLevel: 'Low',
 					independencyLevel: 'Low',
 					environment: 'Large',
 					images: [],
-					address: {
-						id: randomUUID(),
-						latitude: new Decimal(48.8698679),
-						longitude: new Decimal(2.3072976),
-						city: 'Paris',
-						zipcode: '75008',
-						address: '29 champs elysée paris',
-					},
 					requirements: [
 						{
 							id: randomUUID(),
 							description: 'Apartment is prohibited',
-							petId: 'pet-test',
 						},
 					],
 				})
@@ -162,21 +139,13 @@ describe('Register a new Pet', () => {
 					oRGId: 'test-org',
 					description: 'Simba description',
 					age: 'Puppy',
-					dogSize: 'Medium',
+					petSize: 'Medium',
 					energyLevel: 'Low',
 					independencyLevel: 'Low',
 					environment: 'Large',
 					images: [
 						'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAApgAAAKYB3X3/OAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANCSURBVEiJtZZPbBtFFMZ/M7ubXdtdb1xSFyeilBapySVU8h8OoFaooFSqiihIVIpQBKci6KEg9Q6H9kovIHoCIVQJJCKE1ENFjnAgcaSGC6rEnxBwA04Tx43t2FnvDAfjkNibxgHxnWb2e/u992bee7tCa00YFsffekFY+nUzFtjW0LrvjRXrCDIAaPLlW0nHL0SsZtVoaF98mLrx3pdhOqLtYPHChahZcYYO7KvPFxvRl5XPp1sN3adWiD1ZAqD6XYK1b/dvE5IWryTt2udLFedwc1+9kLp+vbbpoDh+6TklxBeAi9TL0taeWpdmZzQDry0AcO+jQ12RyohqqoYoo8RDwJrU+qXkjWtfi8Xxt58BdQuwQs9qC/afLwCw8tnQbqYAPsgxE1S6F3EAIXux2oQFKm0ihMsOF71dHYx+f3NND68ghCu1YIoePPQN1pGRABkJ6Bus96CutRZMydTl+TvuiRW1m3n0eDl0vRPcEysqdXn+jsQPsrHMquGeXEaY4Yk4wxWcY5V/9scqOMOVUFthatyTy8QyqwZ+kDURKoMWxNKr2EeqVKcTNOajqKoBgOE28U4tdQl5p5bwCw7BWquaZSzAPlwjlithJtp3pTImSqQRrb2Z8PHGigD4RZuNX6JYj6wj7O4TFLbCO/Mn/m8R+h6rYSUb3ekokRY6f/YukArN979jcW+V/S8g0eT/N3VN3kTqWbQ428m9/8k0P/1aIhF36PccEl6EhOcAUCrXKZXXWS3XKd2vc/TRBG9O5ELC17MmWubD2nKhUKZa26Ba2+D3P+4/MNCFwg59oWVeYhkzgN/JDR8deKBoD7Y+ljEjGZ0sosXVTvbc6RHirr2reNy1OXd6pJsQ+gqjk8VWFYmHrwBzW/n+uMPFiRwHB2I7ih8ciHFxIkd/3Omk5tCDV1t+2nNu5sxxpDFNx+huNhVT3/zMDz8usXC3ddaHBj1GHj/As08fwTS7Kt1HBTmyN29vdwAw+/wbwLVOJ3uAD1wi/dUH7Qei66PfyuRj4Ik9is+hglfbkbfR3cnZm7chlUWLdwmprtCohX4HUtlOcQjLYCu+fzGJH2QRKvP3UNz8bWk1qMxjGTOMThZ3kvgLI5AzFfo379UAAAAASUVORK5CYII=',
 					],
-					address: {
-						id: randomUUID(),
-						latitude: new Decimal(48.8698679),
-						longitude: new Decimal(2.3072976),
-						city: 'Paris',
-						zipcode: '75008',
-						address: '29 champs elysée paris',
-					},
 					requirements: [],
 				})
 		).rejects.toBeInstanceOf(PetRequirementsQuantityError)

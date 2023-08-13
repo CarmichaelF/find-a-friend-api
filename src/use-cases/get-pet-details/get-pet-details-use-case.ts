@@ -13,7 +13,7 @@ interface GetPetDetailsUseCaseResponse {
 export class GetPetDetailsUseCase {
 	constructor(private petsRepository: PetsRepository) {}
 	async execute({
-		id,
+		id
 	}: GetPetDetailsUseCaseRequest): Promise<GetPetDetailsUseCaseResponse> {
 		const pet = await this.petsRepository.getPetById(id)
 

@@ -14,4 +14,4 @@
 - [X] Um pet deve estar ligado a uma ORG
 - [X] O usuário que quer adotar, entrará em contato com a ORG via WhatsApp
 - [X] Todos os filtros, além da cidade, são opcionais
-- [ ] Para uma ORG acessar a aplicação como admin, ela precisa estar logada
+- [X] Para uma ORG acessar a aplicação como admin, ela precisa estar logada

@@ -1,19 +1,35 @@
 import { randomUUID } from 'crypto'
 import {
 	FilterOptionsKeys,
-	FilterPetsParams,
+	ListPetsParams,
+	PetUncheckedCreateWithRelations,
 	PetWithRelations,
 	PetsRepository,
-	PetsRepositoryCreateParams,
 } from '../pets-repository'
 import { verifyEmptyObject } from '@/utils/verify-empty-object'
+import { Address } from '@prisma/client'
 
 export class InMemoryPetsRepository implements PetsRepository {
 	private pets: PetWithRelations[] = []
 
-	async create({ id, ...rest }: PetsRepositoryCreateParams) {
+	async create({
+		id,
+		images,
+		requirements,
+		address,
+		...rest
+	}: PetUncheckedCreateWithRelations) {
 		const pet: PetWithRelations = {
 			id: id ? id : randomUUID(),
+			address: address as Address,
+			requirements: requirements.map(({ id, ...restRequirement }) => {
+				return {
+					id: id ? id : randomUUID(),
+					petId: id ? id : randomUUID(),
+					...restRequirement,
+				}
+			}),
+			images: images as string[],
 			...rest,
 		}
 
@@ -30,7 +46,7 @@ export class InMemoryPetsRepository implements PetsRepository {
 		return pet
 	}
 
-	async filterPetsByCityOrCharacteristics({ city, ...rest }: FilterPetsParams) {
+	async ListPetsByCityOrCharacteristics({ city, ...rest }: ListPetsParams) {
 		const filteredPetsByCity: PetWithRelations[] = []
 		const filteredPets: PetWithRelations[] = []
 
@@ -38,9 +54,8 @@ export class InMemoryPetsRepository implements PetsRepository {
 			const pet = this.pets[i]
 			if (pet.address?.city === city) filteredPetsByCity.push(pet)
 		}
-	
-		if (verifyEmptyObject({ object: rest }))
-			return filteredPetsByCity
+
+		if (verifyEmptyObject({ object: rest })) return filteredPetsByCity
 
 		for (let i = 0; i < filteredPetsByCity.length; i++) {
 			const pet = filteredPetsByCity[i]

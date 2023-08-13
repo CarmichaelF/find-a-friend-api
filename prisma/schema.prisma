@@ -49,7 +49,7 @@ model Pet {
   address           Address          @relation(fields: [addressId], references: [id])
   addressId         String
   age               String
-  dogSize           String
+  petSize           String
   energyLevel       String
   independencyLevel String
   environment       String

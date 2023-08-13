@@ -5,6 +5,7 @@ import { env } from '@/env'
 import startCloudinary from './services/start-cloudinary-service'
 import { orgRoutes } from './http/controllers/org/routes'
 import { ZodError } from 'zod'
+import { petRoutes } from './http/controllers/pet/routes'
 
 const app = fastify()
 
@@ -15,6 +16,7 @@ app.register(fastifyJwt, {
 })
 
 app.register(orgRoutes)
+app.register(petRoutes)
 
 app.setErrorHandler((error, _, reply) => {
 	if (error instanceof ZodError) {
