@@ -2,6 +2,14 @@ name: Run Unit Tests
 
 on: [push]
 
+env:
+  HASH_SALT: "10"
+  MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+  CLOUDINARY_KEY: ${{ secrets.CLOUDINARY_KEY }}
+  CLOUDINARY_SECRET: ${{ secrets.CLOUDINARY_SECRET }}
+
 jobs:
   run-unit-tests:
     name: Run Unit Tests
