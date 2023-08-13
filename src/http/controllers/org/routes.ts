@@ -3,6 +3,6 @@ import { authenticate } from './authenticate'
 import { register } from './register'
 
 export async function orgRoutes(app: FastifyInstance) {
-	app.post('/org/authenticate', authenticate)
-	app.post('/org', register)
+	app.post('/orgs/authenticate', authenticate)
+	app.post('/orgs', register)
 }

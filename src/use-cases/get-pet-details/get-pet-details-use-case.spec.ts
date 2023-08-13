@@ -17,16 +17,8 @@ describe('Get Pet Details', () => {
 	it('should be able to get pet details', async () => {
 		await petsRepository.create({
 			addressId: 'address-test',
-			address: {
-				id: 'address-test',
-				latitude: new Decimal(48.8698679),
-				longitude: new Decimal(2.3072976),
-				city: 'Paris',
-				zipcode: '75008',
-				address: '29 champs elysée paris',
-			},
 			age: 'Puppy',
-			dogSize: 'Medium',
+			petSize: 'Medium',
 			energyLevel: 'Low',
 			independencyLevel: 'Low',
 			environment: 'Large',
@@ -35,7 +27,15 @@ describe('Get Pet Details', () => {
 			description: 'Description test',
 			name: 'Simba',
 			oRGId: 'org-test',
-			id: 'pet-test'
+			id: 'pet-test',
+			address: {
+				id: 'address-test',
+				latitude: new Decimal(48.8698679),
+				longitude: new Decimal(2.3072976),
+				city: 'Paris',
+				zipcode: '75008',
+				address: '29 champs elysée paris',
+			},
 		})
 		const { pet } = await sut.execute({ id: 'pet-test' })
 

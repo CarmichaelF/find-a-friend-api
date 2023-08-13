@@ -3,7 +3,7 @@ import { InMemoryOrgsRepository } from '@/repositories/in-memory/in-memory-orgs-
 import { RegisterOrgUseCase } from './register-org-use-case'
 import { AddressRepository } from '@/repositories/address-repository'
 import { InMemoryAddressRepository } from '@/repositories/in-memory/in-memory-address-repository'
-import { OrgInvalidAddress } from '../errors/org-invalid-address-error'
+import { InvalidAddress } from '../errors/org-invalid-address-error'
 import { OrgAlreadyExistsError } from '../errors/org-already-exists-error'
 
 let orgsRepository: InMemoryOrgsRepository
@@ -17,8 +17,7 @@ describe('Register ORG', () => {
 		sut = new RegisterOrgUseCase(orgsRepository, addressRepository)
 	})
 
-	//skipping it for now to not consume a lot of maps api
-	it.skip('should be able to register a new ORG', async () => {
+	it('should be able to register a new ORG', async () => {
 		const { org } = await sut.execute({
 			name: 'JS Org',
 			email: 'jsorg@gmail.com',
@@ -65,6 +64,6 @@ describe('Register ORG', () => {
 					password: '123456',
 					phone: '1199999999',
 				})
-		).rejects.toBeInstanceOf(OrgInvalidAddress)
+		).rejects.toBeInstanceOf(InvalidAddress)
 	})
 })

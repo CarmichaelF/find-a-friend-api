@@ -3,7 +3,7 @@ import { ORGsRepository } from '@/repositories/orgs-repository'
 import { hashSync } from 'bcryptjs'
 import { OrgAlreadyExistsError } from '../errors/org-already-exists-error'
 import { getAddressInfo } from '@/utils/get-address-info'
-import { OrgInvalidAddress } from '../errors/org-invalid-address-error'
+import { InvalidAddress } from '../errors/org-invalid-address-error'
 import { AddressRepository } from '@/repositories/address-repository'
 import { Decimal } from '@prisma/client/runtime/library'
 import { org } from '@prisma/client'
@@ -42,7 +42,7 @@ export class RegisterOrgUseCase {
 		const fullAddress = await getAddressInfo({ zipcode, address })
 
 		if (!fullAddress?.latitude || !fullAddress?.longitude || !fullAddress?.city)
-			throw new OrgInvalidAddress()
+			throw new InvalidAddress()
 
 		const { id: addressId } = await this.addressRepository.create({
 			zipcode,

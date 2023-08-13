@@ -4,6 +4,6 @@ export async function jwtVerify(request: FastifyRequest, reply: FastifyReply) {
 	try {
 		await request.jwtVerify()
 	} catch (err) {
-		reply.send(err)
+		return reply.status(401).send({ message: 'Unauthorized.' })
 	}
 }

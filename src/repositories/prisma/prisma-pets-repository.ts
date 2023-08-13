@@ -1,22 +1,25 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { prisma } from '@/lib/prisma'
 import {
-	FilterPetsParams,
+	ListPetsParams,
+	PetUncheckedCreateWithRelations,
 	PetsRepository,
-	PetsRepositoryCreateParams,
 } from '../pets-repository'
 
 export class PrismaPetsRepository implements PetsRepository {
-	async create({ address, requirements, ...rest }: PetsRepositoryCreateParams) {
-		const petAddress = await prisma.address.create({
-			data: address,
-		})
+	async create({
+		addressId,
+		requirements,
+		address,
+		...rest
+	}: PetUncheckedCreateWithRelations) {
 		const pet = await prisma.pet.create({
 			data: {
 				...rest,
 				requirements: {
 					create: requirements,
 				},
-				addressId: petAddress.id,
+				addressId
 			},
 			include: { address: true, requirements: true },
 		})
@@ -32,16 +35,16 @@ export class PrismaPetsRepository implements PetsRepository {
 		return pet
 	}
 
-	async filterPetsByCityOrCharacteristics({
+	async getPetsByCityOrCharacteristics({
 		city,
 		age,
 		description,
-		dogSize,
+		petSize,
 		energyLevel,
 		environment,
 		independencyLevel,
 		name,
-	}: FilterPetsParams) {
+	}: ListPetsParams) {
 		const pets = await prisma.pet.findMany({
 			where: {
 				address: {
@@ -57,8 +60,8 @@ export class PrismaPetsRepository implements PetsRepository {
 					description: {
 						contains: description,
 					},
-					dogSize: {
-						contains: dogSize,
+					petSize: {
+						contains: petSize,
 					},
 					energyLevel: {
 						contains: energyLevel,

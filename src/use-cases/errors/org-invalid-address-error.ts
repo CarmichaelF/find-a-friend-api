@@ -1,5 +1,5 @@
-export class OrgInvalidAddress extends Error{
+export class InvalidAddress extends Error{
 	constructor(){
-		super('Invalid ORG Address.')
+		super('Invalid Address.')
 	}
 }
