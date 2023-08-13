@@ -46,7 +46,7 @@ export class InMemoryPetsRepository implements PetsRepository {
 		return pet
 	}
 
-	async ListPetsByCityOrCharacteristics({ city, ...rest }: ListPetsParams) {
+	async getPetsByCityOrCharacteristics({ city, ...rest }: ListPetsParams) {
 		const filteredPetsByCity: PetWithRelations[] = []
 		const filteredPets: PetWithRelations[] = []
 

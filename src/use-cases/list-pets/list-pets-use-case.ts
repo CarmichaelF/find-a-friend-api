@@ -15,7 +15,7 @@ export class ListPetsUseCase {
 		city,
 		...rest
 	}: ListPetsUseCaseRequest): Promise<ListPetsUseCaseResponse> {
-		const filteredPets = await this.petsRepository.ListPetsByCityOrCharacteristics({
+		const filteredPets = await this.petsRepository.getPetsByCityOrCharacteristics({
 			city,
 			...rest,
 		})

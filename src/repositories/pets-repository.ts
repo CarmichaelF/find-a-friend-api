@@ -24,7 +24,7 @@ export type ListPetsParams = {
 export interface PetsRepository {
   create(data: PetUncheckedCreateWithRelations): Promise<PetWithRelations>;
   getPetById(id: string): Promise<PetWithRelations | null>;
-  ListPetsByCityOrCharacteristics(
+  getPetsByCityOrCharacteristics(
     params: ListPetsParams
   ): Promise<PetWithRelations[]>;
 }

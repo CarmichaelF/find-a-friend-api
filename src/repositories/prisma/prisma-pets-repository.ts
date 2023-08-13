@@ -35,7 +35,7 @@ export class PrismaPetsRepository implements PetsRepository {
 		return pet
 	}
 
-	async ListPetsByCityOrCharacteristics({
+	async getPetsByCityOrCharacteristics({
 		city,
 		age,
 		description,
