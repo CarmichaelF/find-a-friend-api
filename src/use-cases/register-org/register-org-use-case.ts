@@ -34,14 +34,14 @@ export class RegisterOrgUseCase {
 		...rest
 	}: RegisterOrgUseCaseRequest): Promise<RegisterOrgUseCaseResponse> {
 		const password_hash = hashSync(password, env.HASH_SALT)
-		
+
 		const orgWithSameEmail = await this.orgsRepository.findOrgByEmail(email)
 
 		if (orgWithSameEmail !== null) throw new OrgAlreadyExistsError()
 
 		const fullAddress = await getAddressInfo({ zipcode, address })
 
-		if (!fullAddress?.latitude || !fullAddress?.longitude || !fullAddress?.city)
+		if (!fullAddress?.lat || !fullAddress?.lng || !fullAddress?.city)
 			throw new InvalidAddress()
 
 		const { id: addressId } = await this.addressRepository.create({
@@ -49,8 +49,8 @@ export class RegisterOrgUseCase {
 			address: fullAddress.formattedAddress
 				? fullAddress.formattedAddress
 				: address,
-			latitude: new Decimal(fullAddress.latitude),
-			longitude: new Decimal(fullAddress.longitude),
+			latitude: new Decimal(fullAddress.lat),
+			longitude: new Decimal(fullAddress.lng),
 			city: fullAddress.city,
 		})
 
