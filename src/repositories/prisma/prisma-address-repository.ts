@@ -3,8 +3,10 @@ import { Address } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
 
 export class PrismaAddressRepository implements AddressRepository {
-	async create(data: Address) {
-		const address = await prisma.address.create({ data })
+	async create({ city, ...rest }: Address) {
+		const address = await prisma.address.create({
+			data: { city: city.toLowerCase(), ...rest },
+		})
 
 		return address
 	}

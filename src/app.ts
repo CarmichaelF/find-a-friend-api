@@ -5,6 +5,7 @@ import { orgRoutes } from './http/controllers/org/routes'
 import { ZodError } from 'zod'
 import { petRoutes } from './http/controllers/pet/routes'
 import { env } from './env'
+import cors from '@fastify/cors'
 
 export const app = fastify()
 
@@ -12,6 +13,10 @@ startCloudinary()
 
 app.register(fastifyJwt, {
 	secret: env.JWT_SECRET,
+})
+
+app.register(cors, {
+	origin: '*',
 })
 
 app.register(orgRoutes)

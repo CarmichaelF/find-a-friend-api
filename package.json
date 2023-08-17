@@ -18,7 +18,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/cors": "^8.3.0",
     "@fastify/jwt": "^7.2.0",
+    "@googlemaps/google-maps-services-js": "^3.3.35",
     "@prisma/client": "^5.1.1",
     "@typescript-eslint/eslint-plugin": "^6.3.0",
     "@typescript-eslint/parser": "^6.3.0",

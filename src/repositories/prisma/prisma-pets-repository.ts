@@ -45,10 +45,13 @@ export class PrismaPetsRepository implements PetsRepository {
 		independencyLevel,
 		name,
 	}: ListPetsParams) {
+		const cityNormalized = city.normalize('NFD').replace(/\p{Diacritic}/gu, '')
 		const pets = await prisma.pet.findMany({
 			where: {
 				address: {
-					city,
+					city: {
+						contains: cityNormalized.toLowerCase(),
+					}
 				},
 				AND: {
 					name: {
