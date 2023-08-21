@@ -132,7 +132,7 @@ describe('Filter Pets', () => {
 			description: 'Energetic',
 			age: 'Puppy',
 			petSize: 'Medium',
-			energyLevel: 'Low',
+			energyLevel: 'High',
 			independencyLevel: 'Low',
 			environment: 'Large',
 			images: [],
@@ -148,7 +148,7 @@ describe('Filter Pets', () => {
 			petType: 'dog'
 		})
 
-		const { pets } = await sut.execute({ city: 'Paris', description: 'tired' })
+		const { pets } = await sut.execute({ city: 'Paris',  energyLevel: 'Low'})
 
 		expect(pets).toHaveLength(1)
 		expect(pets).toEqual([pet1])
