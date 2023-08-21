@@ -54,4 +54,5 @@ model Pet {
   independencyLevel String
   environment       String
   images            String[]
+  petType           String
 }

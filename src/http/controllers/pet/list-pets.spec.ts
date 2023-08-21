@@ -40,6 +40,7 @@ describe('List Pet', () => {
 						},
 					],
 				},
+				petType: 'dog'
 			},
 		})
 

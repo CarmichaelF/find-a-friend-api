@@ -24,6 +24,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
 				})
 			)
 			.min(1),
+		petType: z.enum(['dog', 'cat'])
 	})
 
 	const body = registerPetBodySchema.parse(request.body)

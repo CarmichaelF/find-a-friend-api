@@ -58,6 +58,7 @@ describe('Filter Pets', () => {
 				address: '29 champs elysée paris',
 			},
 			requirements: [],
+			petType: 'dog'
 		})
 
 		await petsRepository.create({
@@ -81,6 +82,7 @@ describe('Filter Pets', () => {
 				address: 'R. Domingos de Morais',
 			},
 			requirements: [],
+			petType: 'dog'
 		})
 
 		const { pets } = await sut.execute({ city: 'Paris' })
@@ -119,6 +121,7 @@ describe('Filter Pets', () => {
 				address: '29 champs elysée paris',
 			},
 			requirements: [],
+			petType: 'dog'
 		})
 
 		await petsRepository.create({
@@ -129,7 +132,7 @@ describe('Filter Pets', () => {
 			description: 'Energetic',
 			age: 'Puppy',
 			petSize: 'Medium',
-			energyLevel: 'Low',
+			energyLevel: 'High',
 			independencyLevel: 'Low',
 			environment: 'Large',
 			images: [],
@@ -142,9 +145,10 @@ describe('Filter Pets', () => {
 				address: '29 champs elysée paris',
 			},
 			requirements: [],
+			petType: 'dog'
 		})
 
-		const { pets } = await sut.execute({ city: 'Paris', description: 'tired' })
+		const { pets } = await sut.execute({ city: 'Paris',  energyLevel: 'Low'})
 
 		expect(pets).toHaveLength(1)
 		expect(pets).toEqual([pet1])

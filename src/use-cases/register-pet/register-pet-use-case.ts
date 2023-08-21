@@ -19,6 +19,7 @@ interface RegisterPetRequest {
   images: string[];
   requirements: Prisma.PetRequirementCreateInput[];
   oRGId: string;
+  petType: string;
 }
 
 interface RegisterPetResponse {
@@ -43,6 +44,7 @@ export class RegisterPetUseCase {
 		independencyLevel,
 		images,
 		requirements,
+		petType,
 	}: RegisterPetRequest): Promise<RegisterPetResponse> {
 		const org = await this.orgsRepository.findOrgById(oRGId)
 
@@ -77,6 +79,7 @@ export class RegisterPetUseCase {
 			oRGId,
 			address,
 			addressId: org.addressId,
+			petType,
 		})
 
 		return { pet }

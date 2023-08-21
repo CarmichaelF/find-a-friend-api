@@ -38,6 +38,7 @@ describe('Register a pet', () => {
 						description: 'Apartment is prohibited',
 					},
 				],
+				petType: 'dog'
 			})
 		expect(response.statusCode).toEqual(201)
 	})

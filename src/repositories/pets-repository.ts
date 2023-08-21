@@ -1,8 +1,11 @@
 import { Address, Pet, Prisma } from '@prisma/client'
 
-export type FilterOptions = Partial<
-  Omit<Pet, 'id' | 'oRGId' | 'addressId' | 'images'>
+export type OmmitedPetFields = Omit<
+  Pet,
+  'id' | 'oRGId' | 'addressId' | 'images' | 'address' | 'name' | 'description'
 >;
+
+export type FilterOptions = Partial<OmmitedPetFields>;
 
 export type FilterOptionsKeys = keyof FilterOptions;
 
