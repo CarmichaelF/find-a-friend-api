@@ -19,7 +19,7 @@ export class PrismaPetsRepository implements PetsRepository {
 				requirements: {
 					create: requirements,
 				},
-				addressId
+				addressId,
 			},
 			include: { address: true, requirements: true },
 		})
@@ -51,7 +51,7 @@ export class PrismaPetsRepository implements PetsRepository {
 				address: {
 					city: {
 						contains: cityNormalized.toLowerCase(),
-					}
+					},
 				},
 				AND: {
 					name: {
@@ -84,5 +84,14 @@ export class PrismaPetsRepository implements PetsRepository {
 		})
 
 		return pets
+	}
+
+	async getPets() {
+		return prisma.pet.findMany({
+			include: {
+				address: true,
+				requirements: true,
+			},
+		})
 	}
 }

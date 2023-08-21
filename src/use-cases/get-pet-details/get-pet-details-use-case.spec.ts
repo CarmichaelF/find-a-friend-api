@@ -36,6 +36,7 @@ describe('Get Pet Details', () => {
 				zipcode: '75008',
 				address: '29 champs elysée paris',
 			},
+			petType: 'dog'
 		})
 		const { pet } = await sut.execute({ id: 'pet-test' })
 

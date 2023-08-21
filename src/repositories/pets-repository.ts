@@ -27,4 +27,5 @@ export interface PetsRepository {
   getPetsByCityOrCharacteristics(
     params: ListPetsParams
   ): Promise<PetWithRelations[]>;
+  getPets() : Promise<PetWithRelations[]>
 }

@@ -71,4 +71,8 @@ export class InMemoryPetsRepository implements PetsRepository {
 
 		return filteredPets
 	}
+
+	async getPets() {
+		return this.pets
+	}
 }
