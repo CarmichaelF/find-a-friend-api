@@ -85,13 +85,4 @@ export class PrismaPetsRepository implements PetsRepository {
 
 		return pets
 	}
-
-	async getPets() {
-		return prisma.pet.findMany({
-			include: {
-				address: true,
-				requirements: true,
-			},
-		})
-	}
 }
