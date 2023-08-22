@@ -5,6 +5,7 @@ import {
 	PetUncheckedCreateWithRelations,
 	PetsRepository,
 } from '../pets-repository'
+import { normalizeCity } from '@/utils/normalize-city'
 
 export class PrismaPetsRepository implements PetsRepository {
 	async create({
@@ -38,14 +39,12 @@ export class PrismaPetsRepository implements PetsRepository {
 	async getPetsByCityOrCharacteristics({
 		city,
 		age,
-		description,
 		petSize,
 		energyLevel,
 		environment,
 		independencyLevel,
-		name,
 	}: ListPetsParams) {
-		const cityNormalized = city.normalize('NFD').replace(/\p{Diacritic}/gu, '')
+		const cityNormalized = normalizeCity(city)
 		const pets = await prisma.pet.findMany({
 			where: {
 				address: {
@@ -54,14 +53,8 @@ export class PrismaPetsRepository implements PetsRepository {
 					},
 				},
 				AND: {
-					name: {
-						contains: name,
-					},
 					age: {
 						contains: age,
-					},
-					description: {
-						contains: description,
 					},
 					petSize: {
 						contains: petSize,
