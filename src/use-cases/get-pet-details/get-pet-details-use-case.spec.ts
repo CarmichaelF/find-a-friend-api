@@ -17,11 +17,11 @@ describe('Get Pet Details', () => {
 	it('should be able to get pet details', async () => {
 		await petsRepository.create({
 			addressId: 'address-test',
-			age: 'Puppy',
-			petSize: 'Medium',
-			energyLevel: 'Low',
-			independencyLevel: 'Low',
-			environment: 'Large',
+			age: 'Filhote',
+			petSize: 'Médio',
+			energyLevel: 'Alta',
+			independencyLevel: 'Pequena',
+			environment: 'Grande',
 			images: [],
 			requirements: [],
 			description: 'Description test',
@@ -36,7 +36,7 @@ describe('Get Pet Details', () => {
 				zipcode: '75008',
 				address: '29 champs elysée paris',
 			},
-			petType: 'dog'
+			petType: 'cachorro'
 		})
 		const { pet } = await sut.execute({ id: 'pet-test' })
 

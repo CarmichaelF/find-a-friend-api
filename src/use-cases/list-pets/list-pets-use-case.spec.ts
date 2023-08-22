@@ -43,11 +43,11 @@ describe('Filter Pets', () => {
 			addressId: 'address-test',
 			name: 'Simba',
 			description: 'Test description',
-			age: 'Puppy',
-			petSize: 'Medium',
-			energyLevel: 'Low',
-			independencyLevel: 'Low',
-			environment: 'Large',
+			age: 'Filhote',
+			petSize: 'Médio',
+			energyLevel: 'Alta',
+			independencyLevel: 'Pequena',
+			environment: 'Grande',
 			images: [],
 			address: {
 				id: 'address-test',
@@ -58,7 +58,7 @@ describe('Filter Pets', () => {
 				address: '29 champs elysée paris',
 			},
 			requirements: [],
-			petType: 'dog'
+			petType: 'cachorro'
 		})
 
 		await petsRepository.create({
@@ -67,11 +67,11 @@ describe('Filter Pets', () => {
 			addressId: 'address-test-2',
 			name: 'Simba',
 			description: 'Test description',
-			age: 'Puppy',
-			petSize: 'Medium',
-			energyLevel: 'Low',
-			independencyLevel: 'Low',
-			environment: 'Large',
+			age: 'Filhote',
+			petSize: 'Médio',
+			energyLevel: 'Alta',
+			independencyLevel: 'Pequena',
+			environment: 'Grande',
 			images: [],
 			address: {
 				id: 'address-test-2',
@@ -82,7 +82,7 @@ describe('Filter Pets', () => {
 				address: 'R. Domingos de Morais',
 			},
 			requirements: [],
-			petType: 'dog'
+			petType: 'cachorro'
 		})
 
 		const { pets } = await sut.execute({ city: 'Paris' })
@@ -106,11 +106,11 @@ describe('Filter Pets', () => {
 			addressId: 'address-test',
 			name: 'Simba',
 			description: 'Tired',
-			age: 'Puppy',
-			petSize: 'Medium',
-			energyLevel: 'Low',
-			independencyLevel: 'Low',
-			environment: 'Large',
+			age: 'Filhote',
+			petSize: 'Médio',
+			energyLevel: 'Alta',
+			independencyLevel: 'Pequena',
+			environment: 'Grande',
 			images: [],
 			address: {
 				id: randomUUID(),
@@ -121,7 +121,7 @@ describe('Filter Pets', () => {
 				address: '29 champs elysée paris',
 			},
 			requirements: [],
-			petType: 'dog'
+			petType: 'cachorro'
 		})
 
 		await petsRepository.create({
@@ -130,11 +130,11 @@ describe('Filter Pets', () => {
 			addressId: 'address-test',
 			name: 'Simba',
 			description: 'Energetic',
-			age: 'Puppy',
-			petSize: 'Medium',
+			age: 'Filhote',
+			petSize: 'Médio',
 			energyLevel: 'High',
-			independencyLevel: 'Low',
-			environment: 'Large',
+			independencyLevel: 'Pequena',
+			environment: 'Grande',
 			images: [],
 			address: {
 				id: randomUUID(),
@@ -145,10 +145,10 @@ describe('Filter Pets', () => {
 				address: '29 champs elysée paris',
 			},
 			requirements: [],
-			petType: 'dog'
+			petType: 'cachorro'
 		})
 
-		const { pets } = await sut.execute({ city: 'Paris',  energyLevel: 'Low'})
+		const { pets } = await sut.execute({ city: 'Paris',  energyLevel: 'Alta'})
 
 		expect(pets).toHaveLength(1)
 		expect(pets).toEqual([pet1])

@@ -3,6 +3,7 @@ import { PetImageError } from '@/use-cases/errors/pet-image-error'
 import { PetImageQuantityError } from '@/use-cases/errors/pet-image-quantity-error'
 import { PetRequirementsQuantityError } from '@/use-cases/errors/pet-requirenents-quantity-error copy'
 import { makeRegisterPetUseCase } from '@/use-cases/factories/register-pet'
+import { AgeEnum, EnergyLevelEnum, EnvironmentEnum, IndependencyLevelEnum, PetSizeEnum, PetTypeEnum } from '@/use-cases/list-filters/list-pet-filters-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
@@ -11,11 +12,11 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
 		name: z.string(),
 		description: z.string(),
 		oRGId: z.string(),
-		age: z.string(),
-		petSize: z.string(),
-		energyLevel: z.string(),
-		environment: z.string(),
-		independencyLevel: z.string(),
+		age: z.nativeEnum(AgeEnum),
+		petSize: z.nativeEnum(PetSizeEnum),
+		energyLevel: z.nativeEnum(EnergyLevelEnum),
+		environment: z.nativeEnum(EnvironmentEnum),
+		independencyLevel: z.nativeEnum(IndependencyLevelEnum),
 		images: z.array(z.string()).min(1),
 		requirements: z
 			.array(
@@ -24,7 +25,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
 				})
 			)
 			.min(1),
-		petType: z.enum(['dog', 'cat'])
+		petType: z.nativeEnum(PetTypeEnum)
 	})
 
 	const body = registerPetBodySchema.parse(request.body)
