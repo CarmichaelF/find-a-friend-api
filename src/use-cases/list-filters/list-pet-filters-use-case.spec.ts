@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { ListPetTypesUseCase, filters } from './list-filters-use-case'
+import { ListPetFiltersUseCase, filters } from './list-pet-filters-use-case'
 
-let sut: ListPetTypesUseCase
+let sut: ListPetFiltersUseCase
 
 describe('List Pet Types', () => {
 	beforeEach(() => {
-		sut = new ListPetTypesUseCase()
+		sut = new ListPetFiltersUseCase()
 	})
   
 	it('should be able to list pet types', async () => {

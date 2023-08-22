@@ -27,11 +27,11 @@ export enum EnvironmentEnum {
 }
 
 export enum PetTypeEnum {
-  DOG = 'dog',
-  CAT = 'cat',
+  dog = 'cachorro',
+  cat = 'gato',
 }
 
-interface ListPetTypesUseCaseResponse {
+interface ListPetFiltersUseCaseResponse {
   filters: {
     age: typeof AgeEnum;
     petSize: typeof PetSizeEnum;
@@ -51,8 +51,8 @@ export const filters = {
 	petType: PetTypeEnum,
 }
 
-export class ListPetTypesUseCase {
-	async execute(): Promise<ListPetTypesUseCaseResponse> {
+export class ListPetFiltersUseCase {
+	async execute(): Promise<ListPetFiltersUseCaseResponse> {
 		return {
 			filters,
 		}
