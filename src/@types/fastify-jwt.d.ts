@@ -1,4 +1,5 @@
 import '@fastify/jwt'
+import 'fastify-multer/typings/fastify'
 
 declare module '@fastify/jwt' {
   interface FastifyJWT {
@@ -6,4 +7,5 @@ declare module '@fastify/jwt' {
       sub: string;
     };
   }
+
 }

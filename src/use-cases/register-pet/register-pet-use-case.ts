@@ -2,8 +2,6 @@ import { ORGsRepository } from '@/repositories/orgs-repository'
 import { PetsRepository } from '@/repositories/pets-repository'
 import { Pet, Prisma } from '@prisma/client'
 import { OrgNotFoundError } from '../errors/org-not-found-error'
-import { v2 as cloudinary } from 'cloudinary'
-import { PetImageError } from '../errors/pet-image-error'
 import { PetImageQuantityError } from '../errors/pet-image-quantity-error'
 import { PetRequirementsQuantityError } from '../errors/pet-requirenents-quantity-error copy'
 import { AddressRepository } from '@/repositories/address-repository'
@@ -54,16 +52,6 @@ export class RegisterPetUseCase {
 
 		if (requirements.length === 0) throw new PetRequirementsQuantityError()
 
-		const cloudinaryImages = await Promise.all(
-			images.map((image) =>
-				cloudinary.uploader.upload(image, (error) => {
-					if (error) throw new PetImageError(error)
-				})
-			)
-		)
-
-		const uploadedImages = cloudinaryImages.map((image) => image.secure_url)
-
 		const address = await this.addressRepository.getAddressById(org.addressId)
 
 		const pet = await this.petsRepository.create({
@@ -74,7 +62,7 @@ export class RegisterPetUseCase {
 			energyLevel,
 			environment,
 			independencyLevel,
-			images: uploadedImages,
+			images,
 			requirements,
 			oRGId,
 			address,

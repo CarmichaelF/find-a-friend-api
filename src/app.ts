@@ -6,6 +6,7 @@ import { ZodError } from 'zod'
 import { petRoutes } from './http/controllers/pet/routes'
 import { env } from './env'
 import cors from '@fastify/cors'
+import multer from 'fastify-multer'
 
 export const app = fastify()
 
@@ -14,6 +15,8 @@ startCloudinary()
 app.register(fastifyJwt, {
 	secret: env.JWT_SECRET,
 })
+
+app.register(multer.contentParser)
 
 app.register(cors, {
 	origin: '*',
