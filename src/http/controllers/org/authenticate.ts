@@ -13,7 +13,6 @@ export async function authenticate(
 	})
 
 	const body = authenticateBodySchema.parse(request.body)
-
 	const authenticateOrgUseCase = makeAuthenticateOrgUseCase()
 
 	try {
@@ -25,7 +24,9 @@ export async function authenticate(
 			}
 		)
 
-		return reply.status(200).send({ token })
+		return reply
+			.status(200)
+			.send({ org: { ...org, password_hash: undefined }, token })
 	} catch (error) {
 		if (error instanceof OrgAuthenticationError)
 			return reply.status(400).send({ message: error.message })

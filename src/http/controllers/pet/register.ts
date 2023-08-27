@@ -11,7 +11,6 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
 	const registerPetBodySchema = z.object({
 		name: z.string(),
 		description: z.string(),
-		oRGId: z.string(),
 		age: z.nativeEnum(AgeEnum),
 		petSize: z.nativeEnum(PetSizeEnum),
 		energyLevel: z.nativeEnum(EnergyLevelEnum),
@@ -29,10 +28,11 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
 	})
 
 	const body = registerPetBodySchema.parse(request.body)
+	const oRGId = request.user.sub
 
 	try {
 		const registerPetUseCase = makeRegisterPetUseCase()
-		const { pet } = await registerPetUseCase.execute(body)
+		const { pet } = await registerPetUseCase.execute({...body, oRGId})
 		return reply.status(201).send({ pet })
 	} catch (error) {
 		if (error instanceof OrgNotFoundError)
