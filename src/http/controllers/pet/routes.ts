@@ -20,7 +20,6 @@ const upload = multer({
 		const typeArray = file.mimetype.split('/')
 		const fileType = typeArray[1]
 		const acceptedTypes = ['jpeg', 'jpg', 'png']
-
 		if (acceptedTypes.includes(fileType)) {
 			cb(null, true)
 		} else {

@@ -28,6 +28,6 @@ export class UploadPetImages {
 			})
 		)
 
-		return { files: cloudinaryFiles.map(cloudinaryFile => cloudinaryFile.url) }
+		return { files: cloudinaryFiles.map(cloudinaryFile => cloudinaryFile.secure_url) }
 	}
 }

@@ -12,6 +12,7 @@ export async function listPets(request: FastifyRequest, reply: FastifyReply) {
 		energyLevel: z.string().optional(),
 		independencyLevel: z.string().optional(),
 		environment: z.string().optional(),
+		petType: z.string().optional()
 	})
 
 	const queryParams = listPetsQuerySchema.parse(request.query)
