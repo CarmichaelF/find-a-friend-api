@@ -43,6 +43,7 @@ export class PrismaPetsRepository implements PetsRepository {
 		energyLevel,
 		environment,
 		independencyLevel,
+		petType
 	}: ListPetsParams) {
 		const cityNormalized = normalizeCity(city)
 		const pets = await prisma.pet.findMany({
@@ -68,6 +69,9 @@ export class PrismaPetsRepository implements PetsRepository {
 					independencyLevel: {
 						contains: independencyLevel,
 					},
+					petType: {
+						contains: petType
+					}
 				},
 			},
 			include: {
