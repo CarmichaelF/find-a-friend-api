@@ -3,7 +3,6 @@ import { PetsRepository } from '@/repositories/pets-repository'
 import { Pet, Prisma } from '@prisma/client'
 import { OrgNotFoundError } from '../errors/org-not-found-error'
 import { PetImageQuantityError } from '../errors/pet-image-quantity-error'
-import { PetRequirementsQuantityError } from '../errors/pet-requirenents-quantity-error copy'
 import { AddressRepository } from '@/repositories/address-repository'
 
 interface RegisterPetRequest {
@@ -49,8 +48,6 @@ export class RegisterPetUseCase {
 		if (!org) throw new OrgNotFoundError()
 
 		if (images.length === 0) throw new PetImageQuantityError()
-
-		if (requirements.length === 0) throw new PetRequirementsQuantityError()
 
 		const address = await this.addressRepository.getAddressById(org.addressId)
 
