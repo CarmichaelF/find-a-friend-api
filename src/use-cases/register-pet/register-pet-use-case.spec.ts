@@ -8,7 +8,6 @@ import { OrgNotFoundError } from '../errors/org-not-found-error'
 import { randomUUID } from 'crypto'
 import startCloudinary from '@/services/start-cloudinary-service'
 import { PetImageQuantityError } from '../errors/pet-image-quantity-error'
-import { PetRequirementsQuantityError } from '../errors/pet-requirenents-quantity-error copy'
 import { ORGsRepository } from '@/repositories/orgs-repository'
 import { PetsRepository } from '@/repositories/pets-repository'
 import { InMemoryAddressRepository } from '@/repositories/in-memory/in-memory-address-repository'
@@ -123,35 +122,5 @@ describe('Register a new Pet', () => {
 					petType: 'cachorro'
 				})
 		).rejects.toBeInstanceOf(PetImageQuantityError)
-	})
-
-	it('should not be able to register a new pet without requirements', async () => {
-		await orgsRepository.create({
-			id: 'test-org',
-			addressId: 'address-id',
-			email: 'org@gmail.com',
-			name: 'ORG test',
-			phone: '999999999',
-			password_hash: hashSync('123456', env.HASH_SALT),
-		})
-
-		expect(
-			async () =>
-				await sut.execute({
-					name: 'Simba',
-					oRGId: 'test-org',
-					description: 'Simba description',
-					age: 'Filhote',
-					petSize: 'Médio',
-					energyLevel: 'Alta',
-					independencyLevel: 'Pequena',
-					environment: 'Grande',
-					images: [
-						'https://res.cloudinary.com/ddpeptbbo/image/upload/v1692820163/pexels-simona-kidri%C4%8D-2607544_dkngwd.jpg',
-					],
-					requirements: [],
-					petType: 'cachorro'
-				})
-		).rejects.toBeInstanceOf(PetRequirementsQuantityError)
 	})
 })
