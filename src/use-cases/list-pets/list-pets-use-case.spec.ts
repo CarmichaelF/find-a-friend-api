@@ -8,6 +8,7 @@ import { hashSync } from 'bcryptjs'
 import { env } from '@/env'
 import { randomUUID } from 'crypto'
 import { Decimal } from '@prisma/client/runtime/library'
+import { EnergyLevelEnum, IndependencyLevelEnum } from '../list-filters/list-pet-filters-use-case'
 
 let petsRepository: PetsRepository
 let orgsRepository: ORGsRepository
@@ -45,8 +46,8 @@ describe('Filter Pets', () => {
 			description: 'Test description',
 			age: 'Filhote',
 			petSize: 'Médio',
-			energyLevel: 'Alta',
-			independencyLevel: 'Pequena',
+			energyLevel: EnergyLevelEnum.high,
+			independencyLevel: IndependencyLevelEnum.low,
 			environment: 'Grande',
 			images: [],
 			address: {
@@ -69,8 +70,8 @@ describe('Filter Pets', () => {
 			description: 'Test description',
 			age: 'Filhote',
 			petSize: 'Médio',
-			energyLevel: 'Alta',
-			independencyLevel: 'Pequena',
+			energyLevel: EnergyLevelEnum.high,
+			independencyLevel: IndependencyLevelEnum.low,
 			environment: 'Grande',
 			images: [],
 			address: {
@@ -108,8 +109,8 @@ describe('Filter Pets', () => {
 			description: 'Tired',
 			age: 'Filhote',
 			petSize: 'Médio',
-			energyLevel: 'Alta',
-			independencyLevel: 'Pequena',
+			energyLevel: EnergyLevelEnum.high,
+			independencyLevel: IndependencyLevelEnum.low,
 			environment: 'Grande',
 			images: [],
 			address: {
@@ -132,8 +133,8 @@ describe('Filter Pets', () => {
 			description: 'Energetic',
 			age: 'Filhote',
 			petSize: 'Médio',
-			energyLevel: 'High',
-			independencyLevel: 'Pequena',
+			energyLevel: EnergyLevelEnum.medium,
+			independencyLevel: IndependencyLevelEnum.low,
 			environment: 'Grande',
 			images: [],
 			address: {
@@ -148,7 +149,7 @@ describe('Filter Pets', () => {
 			petType: 'cachorro'
 		})
 
-		const { pets } = await sut.execute({ city: 'Paris',  energyLevel: 'Alta'})
+		const { pets } = await sut.execute({ city: 'Paris',  energyLevel: EnergyLevelEnum.high})
 
 		expect(pets).toHaveLength(1)
 		expect(pets).toEqual([pet1])
