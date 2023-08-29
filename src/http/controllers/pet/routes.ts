@@ -35,7 +35,7 @@ export async function petRoutes(app: FastifyInstance) {
 		{ preHandler: upload.array('files'), onRequest: [jwtVerify] },
 		uploadPetImages
 	)
-	app.get('/pets/:id', { onRequest: [jwtVerify] }, getPet)
+	app.get('/pets/:id', getPet)
 	app.get('/pets', listPets)
 	app.get('/pets/filters', listPetFilters)
 }

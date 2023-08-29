@@ -45,7 +45,7 @@ export class PrismaPetsRepository implements PetsRepository {
 		independencyLevel,
 		petType
 	}: ListPetsParams) {
-		const cityNormalized = normalizeCity(city)
+		const cityNormalized = normalizeCity(city || '')
 		const pets = await prisma.pet.findMany({
 			where: {
 				address: {

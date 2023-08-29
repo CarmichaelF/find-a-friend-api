@@ -21,7 +21,7 @@ export type PetWithRelations = Prisma.PetGetPayload<{
 }>;
 
 export type ListPetsParams = {
-  city: string;
+  city?: string;
 } & FilterOptions;
 
 export interface PetsRepository {
