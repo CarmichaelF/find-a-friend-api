@@ -61,13 +61,13 @@ export class PrismaPetsRepository implements PetsRepository {
 						contains: petSize,
 					},
 					energyLevel: {
-						contains: energyLevel,
+						equals: Number(energyLevel),
 					},
 					environment: {
 						contains: environment,
 					},
 					independencyLevel: {
-						contains: independencyLevel,
+						equals: independencyLevel ? Number(independencyLevel) : undefined,
 					},
 					petType: {
 						contains: petType
