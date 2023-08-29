@@ -1,3 +1,5 @@
+import { filterArray } from '@/utils/filter-array'
+
 export enum AgeEnum {
   puppy = 'Filhote',
   adult = 'Adulto',
@@ -20,6 +22,7 @@ export enum IndependencyLevelEnum {
   'medium' = 2,
   'high' = 3,
 }
+
 export enum EnvironmentEnum {
   small = 'Pequeno',
   medium = 'Médio',
@@ -31,24 +34,17 @@ export enum PetTypeEnum {
   cat = 'gato',
 }
 
-interface ListPetFiltersUseCaseResponse {
-  filters: {
-    age: typeof AgeEnum;
-    petSize: typeof PetSizeEnum;
-    energyLevel: typeof EnergyLevelEnum;
-    independencyLevel: typeof IndependencyLevelEnum;
-    environment: typeof EnvironmentEnum;
-    petType: typeof PetTypeEnum;
-  };
-}
-
 export const filters = {
 	age: AgeEnum,
 	petSize: PetSizeEnum,
-	energyLevel: EnergyLevelEnum,
-	independencyLevel: IndependencyLevelEnum,
+	energyLevel: filterArray(Object.values(EnergyLevelEnum), 'number'),
+	independencyLevel: filterArray(Object.values(IndependencyLevelEnum), 'number'),
 	environment: EnvironmentEnum,
 	petType: PetTypeEnum,
+}
+
+interface ListPetFiltersUseCaseResponse {
+  filters: typeof filters;
 }
 
 export class ListPetFiltersUseCase {
