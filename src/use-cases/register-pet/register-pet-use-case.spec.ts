@@ -12,6 +12,7 @@ import { ORGsRepository } from '@/repositories/orgs-repository'
 import { PetsRepository } from '@/repositories/pets-repository'
 import { InMemoryAddressRepository } from '@/repositories/in-memory/in-memory-address-repository'
 import { AddressRepository } from '@/repositories/address-repository'
+import { AgeEnum, EnergyLevelEnum, EnvironmentEnum, IndependencyLevelEnum, PetSizeEnum } from '../list-filters/list-pet-filters-use-case'
 
 let petsRepository: PetsRepository
 let orgsRepository: ORGsRepository
@@ -43,11 +44,11 @@ describe('Register a new Pet', () => {
 			name: 'Simba',
 			oRGId: 'test-org',
 			description: 'Simba description',
-			age: 'Filhote',
-			petSize: 'Médio',
-			energyLevel: 'Alta',
-			independencyLevel: 'Pequena',
-			environment: 'Grande',
+			age: AgeEnum.puppy,
+			petSize: PetSizeEnum.medium,
+			energyLevel: EnergyLevelEnum.high,
+			independencyLevel: IndependencyLevelEnum.low,
+			environment: EnvironmentEnum.big,
 			images: [
 				'https://res.cloudinary.com/ddpeptbbo/image/upload/v1692820163/pexels-simona-kidri%C4%8D-2607544_dkngwd.jpg',
 			],
@@ -72,11 +73,11 @@ describe('Register a new Pet', () => {
 					name: 'Simba',
 					oRGId: 'test-org',
 					description: 'Simba description',
-					age: 'Filhote',
-					petSize: 'Médio',
-					energyLevel: 'Alta',
-					independencyLevel: 'Pequena',
-					environment: 'Grande',
+					age: AgeEnum.puppy,
+					petSize: PetSizeEnum.medium,
+					energyLevel: EnergyLevelEnum.high,
+					independencyLevel: IndependencyLevelEnum.low,
+					environment: EnvironmentEnum.big,
 					images: [
 						'https://res.cloudinary.com/ddpeptbbo/image/upload/v1692820163/pexels-simona-kidri%C4%8D-2607544_dkngwd.jpg',
 					],
@@ -107,11 +108,11 @@ describe('Register a new Pet', () => {
 					name: 'Simba',
 					oRGId: 'test-org',
 					description: 'Simba description',
-					age: 'Filhote',
-					petSize: 'Médio',
-					energyLevel: 'Alta',
-					independencyLevel: 'Pequena',
-					environment: 'Grande',
+					age: AgeEnum.puppy,
+					petSize: PetSizeEnum.medium,
+					energyLevel: EnergyLevelEnum.high,
+					independencyLevel: IndependencyLevelEnum.low,
+					environment: EnvironmentEnum.big,
 					images: [],
 					requirements: [
 						{

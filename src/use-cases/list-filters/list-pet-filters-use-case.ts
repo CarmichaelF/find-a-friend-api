@@ -10,15 +10,15 @@ export enum PetSizeEnum {
 }
 
 export enum EnergyLevelEnum {
-  'low' = 'Pequena',
-  'medium' = 'Média',
-  'high' = 'Alta',
+  'low' = 1,
+  'medium' = 2,
+  'high' = 3,
 }
 
 export enum IndependencyLevelEnum {
-  'low' = 'Pequena',
-  'medium' = 'Média',
-  'high' = 'Alta',
+  'low' = 1,
+  'medium' = 2,
+  'high' = 3,
 }
 export enum EnvironmentEnum {
   small = 'Pequeno',

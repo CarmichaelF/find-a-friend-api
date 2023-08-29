@@ -64,8 +64,18 @@ export class InMemoryPetsRepository implements PetsRepository {
 				const key = charac[0] as FilterOptionsKeys
 				const value = charac[1]
 
-				if (pet?.[key].toLowerCase().includes(value.toLowerCase()))
-					filteredPets.push(pet)
+				const petValue = pet?.[key]
+
+				if(typeof petValue === 'number' && typeof value === 'number') {
+					if(petValue === value) filteredPets.push(pet)
+					
+				} else if(typeof petValue === 'string' && typeof value === 'string') {
+					const lowerCaseValue = value.toLowerCase()
+					const lowerCasePetValue = petValue.toLowerCase()
+	
+					if (lowerCasePetValue.includes(lowerCaseValue))
+						filteredPets.push(pet)
+				}
 			})
 		}
 

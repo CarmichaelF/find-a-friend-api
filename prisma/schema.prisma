@@ -50,8 +50,8 @@ model Pet {
   addressId         String
   age               String
   petSize           String
-  energyLevel       String
-  independencyLevel String
+  energyLevel       Int
+  independencyLevel Int
   environment       String
   images            String[]
   petType           String

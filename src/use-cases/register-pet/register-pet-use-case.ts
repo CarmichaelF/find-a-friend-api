@@ -4,15 +4,16 @@ import { Pet, Prisma } from '@prisma/client'
 import { OrgNotFoundError } from '../errors/org-not-found-error'
 import { PetImageQuantityError } from '../errors/pet-image-quantity-error'
 import { AddressRepository } from '@/repositories/address-repository'
+import { AgeEnum, EnergyLevelEnum, EnvironmentEnum, IndependencyLevelEnum, PetSizeEnum } from '../list-filters/list-pet-filters-use-case'
 
 interface RegisterPetRequest {
   name: string;
   description: string;
-  age: string;
-  petSize: string;
-  energyLevel: string;
-  environment: string;
-  independencyLevel: string;
+  age: AgeEnum;
+  petSize: PetSizeEnum;
+  energyLevel: EnergyLevelEnum;
+  environment: EnvironmentEnum;
+  independencyLevel: IndependencyLevelEnum;
   images: string[];
   requirements: Prisma.PetRequirementCreateInput[];
   oRGId: string;
