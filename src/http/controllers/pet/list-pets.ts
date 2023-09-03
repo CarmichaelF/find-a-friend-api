@@ -9,8 +9,8 @@ export async function listPets(request: FastifyRequest, reply: FastifyReply) {
 		description: z.string().optional(),
 		age: z.string().optional(),
 		petSize: z.string().optional(),
-		energyLevel: z.string().optional(),
-		independencyLevel: z.string().optional(),
+		energyLevel: z.number().optional(),
+		independencyLevel: z.number().optional(),
 		environment: z.string().optional(),
 		petType: z.string().optional()
 	})

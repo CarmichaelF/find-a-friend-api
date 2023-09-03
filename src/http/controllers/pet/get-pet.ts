@@ -1,5 +1,6 @@
 import { PetNotFoundError } from '@/use-cases/errors/pet-not-found-error'
 import { makeGetPetDetailsUseCase } from '@/use-cases/factories/get-pet-details'
+import { removeProperty } from '@/utils/remove-property'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
@@ -15,7 +16,7 @@ export async function getPet(request: FastifyRequest, reply: FastifyReply) {
 
 		const { pet } = await getPetDetailsUseCase.execute({ id })
 
-		return reply.status(200).send({ pet })
+		return reply.status(200).send({ pet:  {...pet, org: removeProperty({obj: pet.org, prop: 'password_hash'})} })
 	} catch (error) {
 		if (error instanceof PetNotFoundError)
 			return reply.status(403).send({ message: error.message })

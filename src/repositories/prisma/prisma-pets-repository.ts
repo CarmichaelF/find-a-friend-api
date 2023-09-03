@@ -12,6 +12,7 @@ export class PrismaPetsRepository implements PetsRepository {
 		addressId,
 		requirements,
 		address,
+		oRGId,
 		...rest
 	}: PetUncheckedCreateWithRelations) {
 		const pet = await prisma.pet.create({
@@ -20,9 +21,18 @@ export class PrismaPetsRepository implements PetsRepository {
 				requirements: {
 					create: requirements,
 				},
-				addressId,
+				org: {
+					connect: {
+						id: oRGId,
+					},
+				},
+				address: {
+					connect: {
+						id: addressId,
+					},
+				},
 			},
-			include: { address: true, requirements: true },
+			include: { address: true, requirements: true, org: true },
 		})
 
 		return pet
@@ -31,7 +41,7 @@ export class PrismaPetsRepository implements PetsRepository {
 	async getPetById(id: string) {
 		const pet = await prisma.pet.findUnique({
 			where: { id },
-			include: { address: true, requirements: true },
+			include: { address: true, requirements: true, org: true },
 		})
 		return pet
 	}
@@ -77,6 +87,7 @@ export class PrismaPetsRepository implements PetsRepository {
 			include: {
 				address: true,
 				requirements: true,
+				org: true
 			},
 		})
 

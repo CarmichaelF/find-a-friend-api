@@ -1,5 +1,6 @@
 import { OrgAuthenticationError } from '@/use-cases/errors/org-authentication-error'
 import { makeAuthenticateOrgUseCase } from '@/use-cases/factories/authenticate-org'
+import { removeProperty } from '@/utils/remove-property'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
@@ -26,7 +27,7 @@ export async function authenticate(
 
 		return reply
 			.status(200)
-			.send({ org: { ...org, password_hash: undefined }, token })
+			.send({ org: removeProperty({obj: org, prop: 'password_hash'}), token })
 	} catch (error) {
 		if (error instanceof OrgAuthenticationError)
 			return reply.status(400).send({ message: error.message })

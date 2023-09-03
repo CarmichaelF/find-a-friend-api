@@ -7,7 +7,7 @@ import {
 	PetsRepository,
 } from '../pets-repository'
 import { verifyEmptyObject } from '@/utils/verify-empty-object'
-import { Address } from '@prisma/client'
+import { Address, org } from '@prisma/client'
 
 export class InMemoryPetsRepository implements PetsRepository {
 	private pets: PetWithRelations[] = []
@@ -17,10 +17,12 @@ export class InMemoryPetsRepository implements PetsRepository {
 		images,
 		requirements,
 		address,
+		org,
 		...rest
 	}: PetUncheckedCreateWithRelations) {
 		const pet: PetWithRelations = {
 			id: id ? id : randomUUID(),
+			org: org as org,
 			address: address as Address,
 			requirements: requirements.map(({ id, ...restRequirement }) => {
 				return {

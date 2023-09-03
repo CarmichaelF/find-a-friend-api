@@ -1,10 +1,11 @@
 import { ORGsRepository } from '@/repositories/orgs-repository'
-import { PetsRepository } from '@/repositories/pets-repository'
-import { Pet, Prisma } from '@prisma/client'
+import { PetWithRelations, PetsRepository } from '@/repositories/pets-repository'
+import { Prisma } from '@prisma/client'
 import { OrgNotFoundError } from '../errors/org-not-found-error'
 import { PetImageQuantityError } from '../errors/pet-image-quantity-error'
 import { AddressRepository } from '@/repositories/address-repository'
 import { AgeEnum, EnergyLevelEnum, EnvironmentEnum, IndependencyLevelEnum, PetSizeEnum } from '../list-filters/list-pet-filters-use-case'
+import { InvalidAddress } from '../errors/org-invalid-address-error'
 
 interface RegisterPetRequest {
   name: string;
@@ -21,7 +22,7 @@ interface RegisterPetRequest {
 }
 
 interface RegisterPetResponse {
-  pet: Pet;
+  pet: PetWithRelations;
 }
 
 export class RegisterPetUseCase {
@@ -52,6 +53,8 @@ export class RegisterPetUseCase {
 
 		const address = await this.addressRepository.getAddressById(org.addressId)
 
+		if(!address) throw new InvalidAddress()
+
 		const pet = await this.petsRepository.create({
 			name,
 			description,
@@ -63,7 +66,8 @@ export class RegisterPetUseCase {
 			images,
 			requirements,
 			oRGId,
-			address,
+			org: null,
+			address: null,
 			addressId: org.addressId,
 			petType,
 		})

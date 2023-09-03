@@ -2,7 +2,15 @@ import { OrgNotFoundError } from '@/use-cases/errors/org-not-found-error'
 import { PetImageError } from '@/use-cases/errors/pet-image-error'
 import { PetImageQuantityError } from '@/use-cases/errors/pet-image-quantity-error'
 import { makeRegisterPetUseCase } from '@/use-cases/factories/register-pet'
-import { AgeEnum, EnergyLevelEnum, EnvironmentEnum, IndependencyLevelEnum, PetSizeEnum, PetTypeEnum } from '@/use-cases/list-filters/list-pet-filters-use-case'
+import {
+	AgeEnum,
+	EnergyLevelEnum,
+	EnvironmentEnum,
+	IndependencyLevelEnum,
+	PetSizeEnum,
+	PetTypeEnum,
+} from '@/use-cases/list-filters/list-pet-filters-use-case'
+import { removeProperty } from '@/utils/remove-property'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
@@ -16,13 +24,12 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
 		environment: z.nativeEnum(EnvironmentEnum),
 		independencyLevel: z.nativeEnum(IndependencyLevelEnum),
 		images: z.array(z.string()).min(1),
-		requirements: z
-			.array(
-				z.object({
-					description: z.string(),
-				})
-			),
-		petType: z.nativeEnum(PetTypeEnum)
+		requirements: z.array(
+			z.object({
+				description: z.string(),
+			})
+		),
+		petType: z.nativeEnum(PetTypeEnum),
 	})
 
 	const body = registerPetBodySchema.parse(request.body)
@@ -30,8 +37,8 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
 
 	try {
 		const registerPetUseCase = makeRegisterPetUseCase()
-		const { pet } = await registerPetUseCase.execute({...body, oRGId})
-		return reply.status(201).send({ pet })
+		const { pet } = await registerPetUseCase.execute({ ...body, oRGId })
+		return reply.status(201).send({ pet: {...pet, org: removeProperty({obj: pet.org, prop: 'password_hash'})} })
 	} catch (error) {
 		if (error instanceof OrgNotFoundError)
 			return reply.status(403).send({ message: error.message })

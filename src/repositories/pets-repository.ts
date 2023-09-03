@@ -1,4 +1,4 @@
-import { Address, Pet, Prisma } from '@prisma/client'
+import { Address, Pet, Prisma, org } from '@prisma/client'
 
 export type OmmitedPetFields = Omit<
   Pet,
@@ -14,10 +14,12 @@ export type PetUncheckedCreateWithRelations =
     address: Address | null;
     addressId: string;
     requirements: Prisma.PetRequirementCreateInput[];
+    org: org  | null;
+    oRGId: string;
   };
 
 export type PetWithRelations = Prisma.PetGetPayload<{
-  include: { address: true; requirements: true };
+  include: { address: true; requirements: true, org: true };
 }>;
 
 export type ListPetsParams = {

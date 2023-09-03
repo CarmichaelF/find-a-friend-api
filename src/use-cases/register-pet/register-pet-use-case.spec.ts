@@ -31,6 +31,17 @@ describe('Register a new Pet', () => {
 	})
 
 	it('should be able to register a new pet', async () => {
+		await addressRepository.create(
+			{
+				address: '29 champs elysée',
+				zipcode: '75008',
+				city: 'Paris',
+				latitude: 48.877343,
+				longitude: 2.329962,
+				id: 'address-id',
+			}
+		)
+		
 		await orgsRepository.create({
 			id: 'test-org',
 			addressId: 'address-id',
