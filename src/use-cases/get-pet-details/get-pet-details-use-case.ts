@@ -1,13 +1,12 @@
-import { PetsRepository } from '@/repositories/pets-repository'
+import { PetWithRelations, PetsRepository } from '@/repositories/pets-repository'
 import { PetNotFoundError } from '../errors/pet-not-found-error'
-import { Pet } from '@prisma/client'
 
 interface GetPetDetailsUseCaseRequest {
   id: string;
 }
 
 interface GetPetDetailsUseCaseResponse {
-  pet: Pet;
+  pet: PetWithRelations;
 }
 
 export class GetPetDetailsUseCase {
