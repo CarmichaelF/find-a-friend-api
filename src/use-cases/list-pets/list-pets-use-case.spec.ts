@@ -8,7 +8,11 @@ import { hashSync } from 'bcryptjs'
 import { env } from '@/env'
 import { randomUUID } from 'crypto'
 import { Decimal } from '@prisma/client/runtime/library'
-import { EnergyLevelEnum, IndependencyLevelEnum } from '../list-filters/list-pet-filters-use-case'
+import {
+	EnergyLevelEnum,
+	IndependencyLevelEnum,
+} from '../list-filters/list-pet-filters-use-case'
+import { removeProperty } from '@/utils/remove-property'
 
 let petsRepository: PetsRepository
 let orgsRepository: ORGsRepository
@@ -50,6 +54,7 @@ describe('Filter Pets', () => {
 			independencyLevel: IndependencyLevelEnum.low,
 			environment: 'Grande',
 			images: [],
+			org: org1,
 			address: {
 				id: 'address-test',
 				latitude: new Decimal(48.8698679),
@@ -59,7 +64,7 @@ describe('Filter Pets', () => {
 				address: '29 champs elysée paris',
 			},
 			requirements: [],
-			petType: 'cachorro'
+			petType: 'cachorro',
 		})
 
 		await petsRepository.create({
@@ -74,6 +79,7 @@ describe('Filter Pets', () => {
 			independencyLevel: IndependencyLevelEnum.low,
 			environment: 'Grande',
 			images: [],
+			org: org2,
 			address: {
 				id: 'address-test-2',
 				latitude: new Decimal(23.5991253),
@@ -83,13 +89,18 @@ describe('Filter Pets', () => {
 				address: 'R. Domingos de Morais',
 			},
 			requirements: [],
-			petType: 'cachorro'
+			petType: 'cachorro',
 		})
 
 		const { pets } = await sut.execute({ city: 'Paris' })
 
+		const orgWithoutPassword = removeProperty({
+			obj: org1,
+			prop: 'password_hash',
+		})
+
 		expect(pets).toHaveLength(1)
-		expect(pets).toEqual([pet1])
+		expect(pets).toEqual([{...pet1, org: orgWithoutPassword}])
 	})
 
 	it('should be able to filter a pet by city and characterictics', async () => {
@@ -112,6 +123,7 @@ describe('Filter Pets', () => {
 			energyLevel: EnergyLevelEnum.high,
 			independencyLevel: IndependencyLevelEnum.low,
 			environment: 'Grande',
+			org: org,
 			images: [],
 			address: {
 				id: randomUUID(),
@@ -122,7 +134,7 @@ describe('Filter Pets', () => {
 				address: '29 champs elysée paris',
 			},
 			requirements: [],
-			petType: 'cachorro'
+			petType: 'cachorro',
 		})
 
 		await petsRepository.create({
@@ -136,6 +148,7 @@ describe('Filter Pets', () => {
 			energyLevel: EnergyLevelEnum.medium,
 			independencyLevel: IndependencyLevelEnum.low,
 			environment: 'Grande',
+			org: org,
 			images: [],
 			address: {
 				id: randomUUID(),
@@ -146,12 +159,20 @@ describe('Filter Pets', () => {
 				address: '29 champs elysée paris',
 			},
 			requirements: [],
-			petType: 'cachorro'
+			petType: 'cachorro',
 		})
 
-		const { pets } = await sut.execute({ city: 'Paris',  energyLevel: EnergyLevelEnum.high})
+		const { pets } = await sut.execute({
+			city: 'Paris',
+			energyLevel: EnergyLevelEnum.high,
+		})
+
+		const orgWithoutPassword = removeProperty({
+			obj: org,
+			prop: 'password_hash',
+		})
 
 		expect(pets).toHaveLength(1)
-		expect(pets).toEqual([pet1])
+		expect(pets).toEqual([{ ...pet1, org: orgWithoutPassword }])
 	})
 })
