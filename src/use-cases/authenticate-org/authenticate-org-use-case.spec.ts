@@ -5,17 +5,29 @@ import { InMemoryOrgsRepository } from '@/repositories/in-memory/in-memory-orgs-
 import { hashSync } from 'bcryptjs'
 import { env } from '@/env'
 import { OrgAuthenticationError } from '../errors/org-authentication-error'
+import { AddressRepository } from '@/repositories/address-repository'
+import { InMemoryAddressRepository } from '@/repositories/in-memory/in-memory-address-repository'
 
 let orgsRepository: ORGsRepository
+let addressRepository: AddressRepository
 let sut: AuthenticateOrgUseCase
 
 describe('Authenticate ORG', () => {
 	beforeEach(() => {
 		orgsRepository = new InMemoryOrgsRepository()
-		sut = new AuthenticateOrgUseCase(orgsRepository)
+		addressRepository = new InMemoryAddressRepository()
+		sut = new AuthenticateOrgUseCase(orgsRepository, addressRepository)
 	})
 
 	it('should be able to authenticate an ORG', async () => {
+		await addressRepository.create({
+			id: 'address-id',
+			zipcode: '99999999',
+			address: 'Rua teste',
+			city: 'cidade',
+			latitude: 0,
+			longitude: 0,
+		})
 		const { email } = await orgsRepository.create({
 			id: 'test-org',
 			addressId: 'address-id',
